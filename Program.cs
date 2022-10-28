@@ -33,19 +33,21 @@ namespace RegexLines
                         "автоматическая обработка сообщений невозможна\n";
         static void Main(string[] args)
         {
-            Regex logDate = new Regex(@"\d{4}.\d{2}.\d{2}"); //Дата лога, без текста
-            Regex line = new Regex(@"[А-я](\w*\s\w*)*(\D[a-zA-Z]*\S)(?=[^\w])"); //Текст лога без даты
-            Regex regex = new Regex(@"(?<=\s)[Аа](\w*\s\w*)*[Аа](?=\s)"); //Вывод записи лога которая начинается и заканчивается на А
-            Regex logWithCode = new Regex(@"(?<=401\s)(\w*\s\w*)*\S(?=[^\w])"); //Вывод записей с кодом 401
-            Regex logs = new Regex(@"(?=\D\d{4})(\S*\s){2}(\D*\d{3})\s[А-я](\w*\s\w*)*(\D[a-zA-Z]*\S)(?=[^\w])"); //Вывод логов
-            Regex regions = new Regex(@"[А-Я]\S*[A-Z]"); //Вывод региона
-            Regex regionsCode = new Regex(@"(?<=[А-Я]\S*)[A-Z]{2}"); //Вывод кода страны
 
+            Regex logs = new Regex(@".*\n[А-я].*|.*\d"); // Вывод логов
+            Regex logDate = new Regex(@"\d{4}.\d{2}.\d{2}"); //Дата лога, без текста
+            Regex line = new Regex(@"[А-я].*"); //Текст лога без даты
+            Regex logWithCode = new Regex(@"(?<=401\s)[А-я].*(?=\S)"); //Вывод записей с кодом 401
+            Regex regex = new Regex(@"[Аа].*[Аа](?=\s)"); //Вывод записи лога которая начинается и заканчивается на А
+            Regex regions = new Regex(@"[А-Я]\S*[A-Z]"); //Вывод региона
+            Regex regionsCode = new Regex(@"(?<=\d.)[A-Z]\w"); //Вывод кода страны
+
+
+            Return(logs);
             Return(logDate);
             Return(line);
-            Return(regex);
             Return(logWithCode);
-            Return(logs);
+            Return(regex);
             Return(regions);
             Return(regionsCode);
         }
@@ -56,8 +58,9 @@ namespace RegexLines
             foreach (Match match in matches)
             {
                 System.Console.OutputEncoding = System.Text.Encoding.UTF8;
-                Console.WriteLine(match.Value);
+                Console.WriteLine(match.Value +"\n");
             }
+            Console.WriteLine("\n");
         }
     }
 }
